@@ -1,10 +1,10 @@
 import React from "react";
 import {useState} from "react";
 
-const wallet = () => {
+const Wallet = () => {
     const [amount,setamount] = useState(10000);
     const change = () => {
-        setamount(amount+)
+        setamount(amount)
     }
     return (
         <div>
@@ -14,4 +14,4 @@ const wallet = () => {
     )
 }
 
-export default wallet
+export default Wallet
