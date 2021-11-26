@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function App() {
   const [val, setval] = useState([]);
   const [displayData, setdisplayData] = useState([]);
   const [name, setname] = useState("");
-  const [quantity, setquantity] = useState(0);
 
   const getdata = () => {
     const itemvalues = localStorage.getItem("My portfolio");
@@ -14,16 +13,29 @@ function App() {
   };
   const [st, setst] = useState(getdata);
 
-  const addStock = (key) => setst([...st, key]);
+  const addStock = (e) => {
+    e.preventDefault();
+    var quantity = e.target[1].value;
+    var name1 = String(e.target[2].value);
+    var temp = true;
+
+    st.map((c) => {
+      if (c[0] === name1) {
+        c[1] += Number(quantity);
+        setst([...st]);
+        temp = false;
+      }
+    });
+    if (temp) {
+      var list = [name1, Number(quantity)];
+      setst([...st, list]);
+    }
+  };
 
   const getStocks = async () => {
-    const header = new Headers();
-    header.append("User-Agent", "request");
-
     axios
       .get(
-        `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${name}&apikey=QEOLM41Z6PNYL6YU/`,
-        header
+        `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${name}&apikey=QEOLM41Z6PNYL6YU/`
       )
       .then((res) => {
         var res1 = JSON.parse(JSON.stringify(res.data)).bestMatches;
@@ -37,11 +49,6 @@ function App() {
     setname(searchWord);
   };
 
-  const handleChange = (e) => {
-    const num = e.target.value;
-    setquantity(num);
-  };
-
   const displayDetails = (key) => {
     const stockItem = val.filter((currElem) => {
       var temp1 = JSON.parse(JSON.stringify(currElem));
@@ -50,7 +57,7 @@ function App() {
     setdisplayData(stockItem);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("My portfolio", JSON.stringify(st));
   }, [st]);
 
@@ -59,10 +66,9 @@ function App() {
       <h1>My Portfolio</h1>
       {st.map((c) => {
         return (
-          <>
-            <h3>{c}</h3>
-            <h3></h3>
-          </>
+          <h3>
+            {c[0]}: {c[1]}
+          </h3>
         );
       })}
       <center>
@@ -84,9 +90,9 @@ function App() {
                 key={temp1["1. symbol"]}
                 style={{
                   display: "flex",
-                  "flex-direction": "row",
-                  "justify-content": "center",
-                  "align-items": "center",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <h3
@@ -95,17 +101,20 @@ function App() {
                 >
                   {temp1["2. name"]}
                 </h3>
-                <button
-                  onClick={() => addStock(temp1["2. name"])}
-                  style={{
-                    "margin-left": "20px",
-                    height: "20px",
-                    width: "40px",
-                  }}
-                >
-                  Add
-                </button>
-                <input type="number" style={{ width: "35px" }} />
+                <form onSubmit={(e) => addStock(e)}>
+                  <button
+                    type="submit"
+                    style={{
+                      marginLeft: "20px",
+                      height: "20px",
+                      width: "40px",
+                    }}
+                  >
+                    Add
+                  </button>
+                  <input type="number" style={{ width: "35px" }} />
+                  <input style={{ display: "none" }} value={temp1["2. name"]} />
+                </form>
               </div>
             );
           })}
