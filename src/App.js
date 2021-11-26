@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Wallet from "./Components/wallet";
+import Portfolio from "./Components/Portfolio";
 
 function App() {
   const [val, setval] = useState([]);
   const [displayData, setdisplayData] = useState([]);
   const [name, setname] = useState("");
+  const [price, setprice] = useState(10000);
 
   const getdata = () => {
     const itemvalues = localStorage.getItem("My portfolio");
     if (itemvalues) return JSON.parse(itemvalues);
     else return [];
   };
+
   const [st, setst] = useState(getdata);
 
   const addStock = (e) => {
@@ -22,14 +26,33 @@ function App() {
     st.map((c) => {
       if (c[0] === name1) {
         c[1] += Number(quantity);
+        var updatedPrice = price - 100 * Number(quantity);
+        setprice(updatedPrice);
         setst([...st]);
         temp = false;
       }
     });
     if (temp) {
       var list = [name1, Number(quantity)];
+      var updatedPrice = price - 100 * Number(quantity);
+      setprice(updatedPrice);
       setst([...st, list]);
     }
+  };
+
+  const sellStock = (e) => {
+    e.preventDefault();
+    var sellquantity = e.target[1].value;
+    var sellstock = e.target[2].value;
+
+    st.map((c) => {
+      if (c[0] === sellstock) {
+        c[1] -= Number(sellquantity);
+        var updatedPrice = price + 100 * Number(sellquantity);
+        setprice(updatedPrice);
+        setst([...st]);
+      }
+    });
   };
 
   const getStocks = async () => {
@@ -44,6 +67,7 @@ function App() {
         }
       });
   };
+
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setname(searchWord);
@@ -63,14 +87,10 @@ function App() {
 
   return (
     <div>
-      <h1>My Portfolio</h1>
-      {st.map((c) => {
-        return (
-          <h3>
-            {c[0]}: {c[1]}
-          </h3>
-        );
-      })}
+      <Portfolio st={st} sellStock={sellStock} />
+
+      <Wallet price={price} />
+
       <center>
         <div>
           <input
@@ -143,3 +163,4 @@ function App() {
 }
 
 export default App;
+//  export { sellStock };

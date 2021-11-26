@@ -1,17 +1,7 @@
 import React from "react";
-import {useState} from "react";
 
-const Wallet = () => {
-    const [amount,setamount] = useState(10000);
-    const change = () => {
-        setamount(amount)
-    }
-    return (
-        <div>
-            <button onClick={}>Sell</button>
-            
-        </div>
-    )
-}
+const Wallet = (props) => {
+  return <h3>My Wallet : ${props.price}</h3>;
+};
 
-export default Wallet
+export default Wallet;
