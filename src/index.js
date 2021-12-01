@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { Container } from "reactstrap";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Container>
+      <App />
+    </Container>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
-
-

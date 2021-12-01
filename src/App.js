@@ -11,6 +11,14 @@ import {
   Form,
   List,
   ListGroupItem,
+  FormGroup,
+  ListGroup,
+  Badge,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  CardGroup,
 } from "reactstrap";
 
 function App() {
@@ -108,93 +116,125 @@ function App() {
 
   return (
     <div>
-      <Portfolio st={st} sellStock={sellStock} />
-
-      <Wallet price={price} />
-
       <center>
         <div>
-          <InputGroup>
-            <InputGroupText>
-              <Input
-                type="text"
-                placeholder="Search for Stocks"
-                value={name}
-                onChange={handleFilter}
-              />
-            </InputGroupText>
-
-            <Button onClick={getStocks}>Search</Button>
-          </InputGroup>
-
-          {val.map((curElem) => {
-            var temp1 = JSON.parse(JSON.stringify(curElem));
-
-            return (
-              <div
-                key={temp1["1. symbol"]}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <h4
-                  onClick={() => displayDetails(temp1["1. symbol"])}
-                  style={{ margin: "5px" }}
-                >
-                  {temp1["2. name"]}
-                </h4>
-
-                <Form onSubmit={(e) => addStock(e)}>
+          <Row>
+            <Col sm="5">
+              <Card>
+                <CardBody>
                   <InputGroup>
-                    <Button
-                      type="submit"
-                      style={{
-                        marginLeft: "20px",
-                        height: "28px",
-                        width: "50px",
-                        backgroundColor: "lightgreen",
-                      }}
-                    >
-                      Add
-                    </Button>
-                    <Input
-                      type="number"
-                      style={{ width: "60px", height: "28px" }}
-                    />
-                    <Input
-                      style={{ display: "none" }}
-                      value={temp1["2. name"]}
-                    />
+                    <InputGroupText>
+                      <Input
+                        type="text"
+                        placeholder="Search for Stocks"
+                        value={name}
+                        onChange={handleFilter}
+                      />
+                    </InputGroupText>
+
+                    <Button onClick={getStocks}>Search</Button>
                   </InputGroup>
-                </Form>
-              </div>
-            );
-          })}
+
+                  {val.map((curElem) => {
+                    var temp1 = JSON.parse(JSON.stringify(curElem));
+
+                    return (
+                      <div
+                        key={temp1["1. symbol"]}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "left",
+                          alignItems: "left",
+                        }}
+                      >
+                        <ListGroup>
+                          <ListGroupItem>
+                            <Row>
+                              <Col>
+                                <h4
+                                  onClick={() =>
+                                    displayDetails(temp1["1. symbol"])
+                                  }
+                                  style={{ margin: "5px" }}
+                                >
+                                  {temp1["1. symbol"]}
+                                </h4>
+                              </Col>
+                              <Col>
+                                <Form onSubmit={(e) => addStock(e)}>
+                                  <InputGroup>
+                                    <Button
+                                      type="submit"
+                                      style={{
+                                        marginLeft: "20px",
+                                        height: "28px",
+                                        width: "65px",
+                                        backgroundColor: "lightgreen",
+                                      }}
+                                    >
+                                      Add
+                                    </Button>
+                                    <Input
+                                      type="number"
+                                      style={{ height: "28px" }}
+                                    />
+                                    <Input
+                                      style={{ display: "none" }}
+                                      value={temp1["1. symbol"]}
+                                    />
+                                  </InputGroup>
+                                </Form>
+                              </Col>
+                            </Row>
+                          </ListGroupItem>
+                        </ListGroup>
+                      </div>
+                    );
+                  })}
+                </CardBody>
+              </Card>
+            </Col>
+            <Col sm="3">
+              <Card>
+                <CardBody>
+                  <Wallet price={price} />
+                  <br />
+                  {displayData.map((i) => {
+                    var temp2 = JSON.parse(JSON.stringify(i));
+                    return (
+                      <div key={temp2["1. symbol"]}>
+                        <List>
+                          <ul>
+                            <li>stocksymbol : {temp2["1. symbol"]}</li>
+                            <li>stockname : {temp2["2. name"]}</li>
+                            <li>stocktype : {temp2["3. type"]}</li>
+                            <li>region : {temp2["4. region"]}</li>
+                            <li>market opens at : {temp2["5. marketOpen"]}</li>
+                            <li>
+                              market closes at : {temp2["6. marketClose"]}
+                            </li>
+                            <li>timezone : {temp2["7. timezone"]}</li>
+                            <li>currency : {temp2["8. currency"]}</li>
+                            <li>matchScore : {temp2["9. matchScore"]}</li>
+                          </ul>
+                        </List>
+                      </div>
+                    );
+                  })}
+                </CardBody>
+              </Card>
+            </Col>
+            <Col sm="4">
+              <Card>
+                <CardBody>
+                  <Portfolio st={st} sellStock={sellStock} />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
         </div>
       </center>
-      {displayData.map((i) => {
-        var temp2 = JSON.parse(JSON.stringify(i));
-        return (
-          <div key={temp2["1. symbol"]}>
-            <List>
-              <ul>
-                <li>stocksymbol : {temp2["1. symbol"]}</li>
-                <li>stockname : {temp2["2. name"]}</li>
-                <li>stocktype : {temp2["3. type"]}</li>
-                <li>region : {temp2["4. region"]}</li>
-                <li>market opens at : {temp2["5. marketOpen"]}</li>
-                <li>market closes at : {temp2["6. marketClose"]}</li>
-                <li>timezone : {temp2["7. timezone"]}</li>
-                <li>currency : {temp2["8. currency"]}</li>
-                <li>matchScore : {temp2["9. matchScore"]}</li>
-              </ul>
-            </List>
-          </div>
-        );
-      })}
     </div>
   );
 }
