@@ -1,9 +1,21 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Button,
+  Input,
+  InputGroup,
+  Form,
+  FormGroup,
+  ListGroup,
+  ListGroupItem,
+  Badge,
+} from "reactstrap";
 
 const Portfolio = (props) => {
   return (
     <>
-      <h1>My Portfolio</h1>
+      <h3 style={{ fontSize: "30px" }}> My Portfolio</h3>
+      <br />
       {props.st.map((c) => {
         return (
           <div
@@ -14,23 +26,33 @@ const Portfolio = (props) => {
               alignItems: "center",
             }}
           >
-            <h3>
-              {c[0]}: {c[1]}
-            </h3>
-            <form onSubmit={(e) => props.sellStock(e)}>
-              <button
-                type="submit"
-                style={{
-                  marginLeft: "20px",
-                  height: "20px",
-                  width: "40px",
-                }}
-              >
-                Sell
-              </button>
-              <input type="number" style={{ width: "30px" }} />
-              <input style={{ display: "none" }} value={c[0]} />
-            </form>
+            <ListGroup>
+              <ListGroupItem>
+                {c[0]} <Badge pill>{c[1]}</Badge>
+              </ListGroupItem>
+            </ListGroup>
+            <br />
+            <Form onSubmit={(e) => props.sellStock(e)}>
+              <InputGroup>
+                <Button
+                  type="submit"
+                  style={{
+                    marginLeft: "20px",
+                    height: "28px",
+                    width: "40px",
+                    backgroundColor: "red",
+                  }}
+                >
+                  Sell
+                </Button>
+                <Input
+                  type="number"
+                  style={{ width: "60px", height: "28px" }}
+                />
+              </InputGroup>
+              <Input style={{ display: "none" }} value={c[0]} />
+            </Form>
+            <br />
           </div>
         );
       })}

@@ -1,7 +1,8 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Wallet = (props) => {
-  return <h3>My Wallet : ${props.price}</h3>;
+  return <h4>My Wallet : ${props.price}</h4>;
 };
 
 export default Wallet;

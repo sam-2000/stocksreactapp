@@ -2,12 +2,29 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Wallet from "./Components/wallet";
 import Portfolio from "./Components/Portfolio";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Form,
+  List,
+  ListGroupItem,
+} from "reactstrap";
 
 function App() {
   const [val, setval] = useState([]);
   const [displayData, setdisplayData] = useState([]);
   const [name, setname] = useState("");
-  const [price, setprice] = useState(10000);
+
+  const getprice = () => {
+    const pricevalue = localStorage.getItem("rem balance");
+    if (pricevalue) return pricevalue;
+    else return Number(10000);
+  };
+
+  const [price, setprice] = useState(getprice);
 
   const getdata = () => {
     const itemvalues = localStorage.getItem("My portfolio");
@@ -85,6 +102,10 @@ function App() {
     localStorage.setItem("My portfolio", JSON.stringify(st));
   }, [st]);
 
+  useEffect(() => {
+    localStorage.setItem("rem balance", price);
+  }, [price]);
+
   return (
     <div>
       <Portfolio st={st} sellStock={sellStock} />
@@ -93,14 +114,18 @@ function App() {
 
       <center>
         <div>
-          <input
-            type="text"
-            placeholder="Search for Stocks"
-            value={name}
-            onChange={handleFilter}
-          ></input>
+          <InputGroup>
+            <InputGroupText>
+              <Input
+                type="text"
+                placeholder="Search for Stocks"
+                value={name}
+                onChange={handleFilter}
+              />
+            </InputGroupText>
 
-          <button onClick={getStocks}>Search</button>
+            <Button onClick={getStocks}>Search</Button>
+          </InputGroup>
 
           {val.map((curElem) => {
             var temp1 = JSON.parse(JSON.stringify(curElem));
@@ -115,26 +140,36 @@ function App() {
                   alignItems: "center",
                 }}
               >
-                <h3
+                <h4
                   onClick={() => displayDetails(temp1["1. symbol"])}
                   style={{ margin: "5px" }}
                 >
                   {temp1["2. name"]}
-                </h3>
-                <form onSubmit={(e) => addStock(e)}>
-                  <button
-                    type="submit"
-                    style={{
-                      marginLeft: "20px",
-                      height: "20px",
-                      width: "40px",
-                    }}
-                  >
-                    Add
-                  </button>
-                  <input type="number" style={{ width: "35px" }} />
-                  <input style={{ display: "none" }} value={temp1["2. name"]} />
-                </form>
+                </h4>
+
+                <Form onSubmit={(e) => addStock(e)}>
+                  <InputGroup>
+                    <Button
+                      type="submit"
+                      style={{
+                        marginLeft: "20px",
+                        height: "28px",
+                        width: "50px",
+                        backgroundColor: "lightgreen",
+                      }}
+                    >
+                      Add
+                    </Button>
+                    <Input
+                      type="number"
+                      style={{ width: "60px", height: "28px" }}
+                    />
+                    <Input
+                      style={{ display: "none" }}
+                      value={temp1["2. name"]}
+                    />
+                  </InputGroup>
+                </Form>
               </div>
             );
           })}
@@ -144,17 +179,19 @@ function App() {
         var temp2 = JSON.parse(JSON.stringify(i));
         return (
           <div key={temp2["1. symbol"]}>
-            <ul>
-              <li>stocksymbol : {temp2["1. symbol"]}</li>
-              <li>stockname : {temp2["2. name"]}</li>
-              <li>stocktype : {temp2["3. type"]}</li>
-              <li>region : {temp2["4. region"]}</li>
-              <li>market opens at : {temp2["5. marketOpen"]}</li>
-              <li>market closes at : {temp2["6. marketClose"]}</li>
-              <li>timezone : {temp2["7. timezone"]}</li>
-              <li>currency : {temp2["8. currency"]}</li>
-              <li>matchScore : {temp2["9. matchScore"]}</li>
-            </ul>
+            <List>
+              <ul>
+                <li>stocksymbol : {temp2["1. symbol"]}</li>
+                <li>stockname : {temp2["2. name"]}</li>
+                <li>stocktype : {temp2["3. type"]}</li>
+                <li>region : {temp2["4. region"]}</li>
+                <li>market opens at : {temp2["5. marketOpen"]}</li>
+                <li>market closes at : {temp2["6. marketClose"]}</li>
+                <li>timezone : {temp2["7. timezone"]}</li>
+                <li>currency : {temp2["8. currency"]}</li>
+                <li>matchScore : {temp2["9. matchScore"]}</li>
+              </ul>
+            </List>
           </div>
         );
       })}
