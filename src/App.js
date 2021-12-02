@@ -19,6 +19,7 @@ import {
   Card,
   CardBody,
   CardGroup,
+  ListInlineItem,
 } from "reactstrap";
 
 function App() {
@@ -195,6 +196,8 @@ function App() {
                 </CardBody>
               </Card>
             </Col>
+          </Row>
+          <Row>
             <Col sm="3">
               <Card>
                 <CardBody>
@@ -204,20 +207,34 @@ function App() {
                     var temp2 = JSON.parse(JSON.stringify(i));
                     return (
                       <div key={temp2["1. symbol"]}>
-                        <List>
-                          <ul>
-                            <li>stocksymbol : {temp2["1. symbol"]}</li>
-                            <li>stockname : {temp2["2. name"]}</li>
-                            <li>stocktype : {temp2["3. type"]}</li>
-                            <li>region : {temp2["4. region"]}</li>
-                            <li>market opens at : {temp2["5. marketOpen"]}</li>
-                            <li>
-                              market closes at : {temp2["6. marketClose"]}
-                            </li>
-                            <li>timezone : {temp2["7. timezone"]}</li>
-                            <li>currency : {temp2["8. currency"]}</li>
-                            <li>matchScore : {temp2["9. matchScore"]}</li>
-                          </ul>
+                        <List type="inline">
+                          <ListInlineItem>
+                            stocksymbol : {temp2["1. symbol"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            stockname : {temp2["2. name"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            stocktype : {temp2["3. type"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            region : {temp2["4. region"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            market opens at : {temp2["5. marketOpen"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            market closes at : {temp2["6. marketClose"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            timezone : {temp2["7. timezone"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            currency : {temp2["8. currency"]}
+                          </ListInlineItem>
+                          <ListInlineItem>
+                            matchScore : {temp2["9. matchScore"]}
+                          </ListInlineItem>
                         </List>
                       </div>
                     );
@@ -225,6 +242,8 @@ function App() {
                 </CardBody>
               </Card>
             </Col>
+          </Row>
+          <Row>
             <Col sm="4">
               <Card>
                 <CardBody>
